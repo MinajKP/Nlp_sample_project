@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI APP</title>
+
+    {% load static %}
+
+    <!-- Link to Font Awesome for attractive icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url('{% static "nlp_app/images/bg2.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('{% static "nlp_app/images/bg2.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            width: 100%;
+            max-width: 1200px;
+            gap: 20px;
+        }
+
+        .left-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto;
+            gap: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            height: auto;
+            width: 100%;
+        }
+
+        .form-section {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 250px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .form-section h1 {
+            font-size: 1.4em;
+            color: #a7c8f2;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .answer-container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 25px;
+            font-size: 1em;
+            color: white;
+            font-weight: 600;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+        }
+
+        h1 {
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            color: #a7c8f2;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .upload-container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            padding: 7px 15px; /* Adjusted padding to make room for the content */
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Ensures the content aligns to the top */
+            align-items: center;
+            height: auto;
+            width: 100%;
+            overflow: hidden;
+}
+
+        .upload-container h1 {
+            font-size: 1.4em;
+            color: #a7c8f2;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 50px; /* Reduced margin to keep it closer to the top */
+            margin-top: 10px; /* Ensure no margin at the top */
+}
+
+
+        .custom-file-upload i {
+            font-size: 16px; /* Adjust icon size */
+            transition: transform 0.4s ease; /* Icon size transition on hover */
+}
+
+
+        .upload-button-container button,
+        .ask-question-container button,
+        .search-internet-container button,
+        .generate-text-container button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+            .custom-file-upload:hover {
+                background-color: #0056b3;
+                transform: scale(1.05);
+            }
+
+.custom-file-upload {
+    background-color: rgba(0, 0, 0, 0.6); /* Dark transparent background */
+    color: #fff;
+    padding: 10px 25px; /* Padding to match other buttons */
+    border-radius: 30px; /* Rounded corners to match other buttons */
+    font-size: 16px; /* Font size to match other buttons */
+    font-weight: 600; /* Font weight to match other buttons */
+    cursor: pointer;
+    border: none; /* Remove the border */
+    transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
+    display: inline-flex;
+    align-items: center; /* Center the icon and text vertically */
+    justify-content: center; /* Center the icon and text horizontally */
+    gap: 8px; /* Space between the icon and text */
+    text-transform: uppercase; /* Uppercase text for a modern look */
+    width: auto; /* Ensure the width is auto to avoid stretching */
+    white-space: nowrap; /* Prevent text from wrapping */
+    margin-top: 30px; /* Ensure no top margin */
+}
+
+.custom-file-upload input {
+    width: 0; /* Hide the actual input field */
+    height: 0; /* Hide the actual input field */
+    visibility: hidden; /* Ensure input field is hidden */
+}
+
+/* Modern look for the "Click to Upload" button */
+/* Dark Transparent Look for the "Click to Upload" button */
+.click-to-upload-btn {
+    margin-top: 3px;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark transparent background */
+    color: #fff;
+    padding: 14px 35px; /* Adjusted padding for a modern size */
+    border-radius: 50px; /* Rounded corners */
+    font-size: 16px; /* Standard font size */
+    font-weight: bold; /* Bold text */
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease-in-out; /* Smooth transition for hover */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space between icon and text */
+}
+
+/* Hover effect */
+.click-to-upload-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Slightly darker on hover */
+    transform: scale(1.05); /* Slightly enlarge the button */
+}
+
+/* Icon inside the button */
+.click-to-upload-btn i {
+    font-size: 18px; /* Larger icon size */
+    transition: transform 0.3s ease; /* Smooth icon transition */
+}
+
+/* Hover effect for icon */
+.click-to-upload-btn:hover i {
+    transform: rotate(360deg); /* Rotate the icon on hover */
+}
+#file-name {
+    font-style: italic; /* Makes the text italic */
+    font-size: 12px; /* Makes the text smaller */
+    color: #aaa; /* Light gray color for a subtle look */
+    margin-top: 10px; /* Adds a little space above */
+    margin-bottom: 20px; /* Adds space below the text to create distance from the button */
+}
+
+
+
+        .upload-button-container button:hover,
+        .ask-question-container button:hover,
+        .search-internet-container button:hover,
+        .generate-text-container button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            margin: 10px 0;
+            background: transparent;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.6);
+        }
+
+        .generate-text-container {
+            height: 250px;
+        }
+
+        @media (max-width: 1100px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .left-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-overlay"></div>
+
+    <div class="container">
+        <!-- Left Container: Upload, Search, and Database Section -->
+        <div class="left-container">
+            <!-- Upload File Section -->
+            <div class="form-section upload-container">
+                <h1><i class="fa-solid fa-folder" style="color: #F4B400;"></i> UPLOAD FILE</h1>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label class="custom-file-upload click-to-upload-btn">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Click to Upload</span>
+                        <input type="file" name="file" id="file-upload" class="file-upload-input" onchange="updateFileName()">
+                    </label>
+                    <div class="file-name" id="file-name">No file chosen</div>
+                    <div class="upload-button-container">
+                        <button type="submit">Upload File</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Ask Question Section -->
+            <div class="form-section ask-question-container">
+                <h1><i class="fas fa-search" style="color: #EA4335;"></i> SEARCH DATABASE</h1>
+                <form method="GET">
+                    <input type="number" name="file_id" placeholder="Enter File ID" required>
+                    <input type="text" name="question" placeholder="Enter your question" required>
+                    <button type="submit">Get Answer</button>
+                </form>
+            </div>
+
+            <!-- Search Internet Section -->
+            <div class="form-section search-internet-container">
+                <h1><i class="fas fa-globe" style="color: #0F9D58;"></i> SEARCH INTERNET</h1>
+                <form method="GET">
+                    <input type="text" name="internet_question" placeholder="Ask a question" required>
+                    <button type="submit">Search Internet</button>
+                </form>
+            </div>
+
+            <!-- Generate Text Section -->
+            <div class="form-section generate-text-container">
+                <h1><i class="fa-solid fa-photo-film" style="color: #800000;"></i> TEXT TO IMAGE</h1>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="generate_prompt" placeholder="Enter the image description" required>
+                    <button type="submit">Generate</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Answer Section in its own gray container -->
+        <div class="answer-container">
+            <h1><i class="fa-regular fa-comments" style="color: #4285F4;"></i> ANSWER</h1>
+            <div id="answer-placeholder">
+                {% if answer %}
+                    <p>{{ answer }}</p>
+                {% elif internet_answer %}
+                    <p>{{ internet_answer }}</p>
+                {% else %}
+                    <p>Your answer will appear here...</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateFileName() {
+            const fileInput = document.getElementById('file-upload');
+            const fileNameDisplay = document.getElementById('file-name');
+            const fileName = fileInput.files[0] ? fileInput.files[0].name : "No file chosen";
+            fileNameDisplay.textContent = fileName;
+        }
+    </script>
+</body>
+</html>
