@@ -4,10 +4,12 @@ from .models import UploadedFile
 from django.conf import settings
 from utils.askinternet import AskInternet
 from utils.data_upload import DataUpload
-from utils.askdatabase import answer_question
+from utils.askdatabase import AskDatabase
 
 ask_internet = AskInternet(google_api_key= settings.GOOGLE_API_KEY, cse_id=settings.CSE_ID)
 data_upload = DataUpload()
+ask_database = AskDatabase("deepset/roberta-base-squad2", "facebook/bart-large-cnn")
+
 
 # View for handling file uploads and answering queries
 def handle_request(request):
@@ -32,7 +34,7 @@ def handle_request(request):
 
         if file_id and question:
             file = get_object_or_404(UploadedFile, id=file_id)
-            answer = answer_question(file_id, question)  # Answer the question based on file content
+            answer = ask_database.answer_question(file_id, question)  # Answer the question based on file content
 
         # Handle searching the internet if the question is an internet query
         if internet_question:
