@@ -18,8 +18,9 @@ load_dotenv()  # This loads variables from the .env file
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 CSE_ID = os.getenv('CSE_ID')
 
-ELASTICSEARCH_HOST = os.getenv('ELASTICSEARCH_HOST')
-ELASTICSEARCH_AUTH =os.getenv('ELASTICSEARCH_AUTH')
+
+AWS_REGION = os.getenv('ap-south-1')
+DYNAMODB_TABLE_NAME = os.getenv('DYNAMODB_TABLE_NAME')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
